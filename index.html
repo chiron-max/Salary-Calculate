@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>月度工作时长统计</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">⌁</div>
+        <div>
+          <h1>月度工作时长统计</h1>
+          <p>支持夜班、跨天、加班、碎片化工时与多日期批量添加</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="ghost-btn" id="prevMonthBtn" aria-label="上个月">←</button>
+        <button class="ghost-btn month-label" id="monthLabel" aria-label="当前月份"></button>
+        <button class="ghost-btn" id="nextMonthBtn" aria-label="下个月">→</button>
+        <button class="ghost-btn" id="todayBtn">今天</button>
+        <button class="ghost-btn" id="multiSelectBtn">多选日期</button>
+        <button class="ghost-btn" id="exportJsonBtn">导出 JSON</button>
+        <button class="ghost-btn" id="exportCsvBtn">导出 CSV</button>
+      </div>
+    </header>
+
+    <section class="summary-grid" id="summaryGrid"></section>
+
+    <main class="main-layout">
+      <section class="calendar-panel">
+        <div class="panel-head">
+          <div>
+            <h2>月视图</h2>
+            <p>点击日期查看与编辑，开启多选后可一次性给多个日期添加时间 package</p>
+          </div>
+          <div class="legend">
+            <span><i class="dot normal"></i>正常</span>
+            <span><i class="dot overtime"></i>加班</span>
+            <span><i class="dot night"></i>夜班</span>
+            <span><i class="dot custom"></i>自定义</span>
+          </div>
+        </div>
+
+        <div class="weekday-row" id="weekdayRow"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="panel-card inspector-card">
+          <div class="inspector-head">
+            <div>
+              <h2 id="inspectorTitle">请选择日期</h2>
+              <p id="inspectorMeta">单击某一天查看该日的时间 package</p>
+            </div>
+            <div class="selection-badge" id="selectionBadge">0 选中</div>
+          </div>
+
+          <div id="selectedDatesChips" class="chips"></div>
+
+          <div id="daySegments" class="segments-list"></div>
+
+          <div class="form-divider"></div>
+
+          <form id="segmentForm" class="segment-form">
+            <input type="hidden" name="segmentId" />
+
+            <label class="field">
+              <span>模板</span>
+              <select name="profileId" id="profileSelect"></select>
+            </label>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>开始</span>
+                <input type="time" name="start" required />
+              </label>
+              <label class="field">
+                <span>结束</span>
+                <input type="time" name="end" required />
+              </label>
+            </div>
+
+            <label class="field">
+              <span>类型</span>
+              <select name="segmentType">
+                <option value="normal">正常</option>
+                <option value="overtime">加班</option>
+                <option value="night">夜班</option>
+                <option value="custom">自定义</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>备注</span>
+              <input type="text" name="note" placeholder="可选" />
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-btn" id="submitBtn">添加时间 package</button>
+              <button type="button" class="ghost-btn" id="cancelEditBtn" hidden>取消编辑</button>
+            </div>
+
+            <p class="form-hint" id="formHint">
+              当前会优先应用到已选日期；未开启多选时，作用于当前日期。
+            </p>
+          </form>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <script defer src="app.js"></script>
+</body>
+</html>
