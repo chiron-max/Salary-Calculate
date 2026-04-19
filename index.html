@@ -889,7 +889,7 @@
       <div class="panel-head">
         <div>
           <h2>月视图</h2>
-          <p>点击日期查看与编辑，开启多选后可一次性给多个日期添加时间 package</p>
+          <p>点击日期查看与编辑，开启多选后可一次性给多个日期添加时间段</p>
         </div>
         <div class="legend">
           <span><i class="dot normal"></i>正常</span>
@@ -908,7 +908,7 @@
         <div class="inspector-head">
           <div>
             <h2 id="inspectorTitle">请选择日期</h2>
-            <p id="inspectorMeta">单击某一天查看该日的时间 package</p>
+            <p id="inspectorMeta">单击某一天查看该日的时间段</p>
           </div>
           <div class="selection-badge" id="selectionBadge">0 选中</div>
         </div>
@@ -947,7 +947,7 @@
           </label>
 
           <div class="form-actions">
-            <button type="submit" class="primary-btn" id="submitBtn">添加时间 package</button>
+            <button type="submit" class="primary-btn" id="submitBtn">添加时间段</button>
             <button type="button" class="ghost-btn" id="cancelEditBtn" hidden>取消编辑</button>
           </div>
 
@@ -1218,11 +1218,12 @@ function bindEvents() {
   els.nextMonthBtn.addEventListener("click", () => { state.currentMonth = shiftMonth(state.currentMonth, 1); onMonthChanged(); });
 
   els.todayBtn.addEventListener("click", () => {
+    const todayKey = toDateKey(new Date());
     state.currentMonth = formatMonthKey(new Date());
-    state.selectedDate = toDateKey(new Date());
+    state.selectedDate = todayKey;  // 设置为今天的日期
     state.selectedDates.clear();
     state.multiSelectMode = false;
-    onMonthChanged(true);
+    onMonthChanged(true, todayKey);  // 传入今天的真实日期
     showToast("已切换到今天");
   });
 
@@ -1550,11 +1551,17 @@ function isBuiltin(profileId) {
 
 /* ─── MONTH ────────────────────────────────────── */
 
-function onMonthChanged(resetSelection = false) {
+function onMonthChanged(resetSelection = false, forceSelectedDate = null) {
   ensureMonth(state.currentMonth);
   const days = getDaysInMonth(state.currentMonth);
   if (resetSelection) {
-    state.selectedDate = days[0] || state.selectedDate;
+    // 如果提供了强制选择的日期并且在当前月份中存在，则使用该日期
+    if (forceSelectedDate && days.includes(forceSelectedDate)) {
+      state.selectedDate = forceSelectedDate;
+    } else {
+      // 否则使用第一个日期
+      state.selectedDate = days[0] || state.selectedDate;
+    }
     state.selectedDates.clear();
     state.multiSelectMode = false;
   } else {
