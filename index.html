@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>月度工作时长统计</title>
   <style>
     :root {
@@ -118,6 +118,7 @@
         var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     button, input, select { font: inherit; }
@@ -175,10 +176,14 @@
     .ghost-btn, .primary-btn {
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 10px 14px;
+      padding: 12px 16px; /* 增加触摸面积 */
       background: rgba(255,255,255,0.72);
       color: var(--text);
       transition: transform .15s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+      min-height: 44px; /* 符合触摸标准 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .theme-dark .ghost-btn, .theme-dark .primary-btn {
@@ -204,10 +209,11 @@
     .danger-btn {
       border: 1px solid rgba(255,59,48,0.2);
       border-radius: 14px;
-      padding: 10px 14px;
+      padding: 12px 16px;
       background: rgba(255,59,48,0.06);
       color: var(--danger);
       transition: transform .15s ease, background .15s ease;
+      min-height: 44px;
     }
 
     .danger-btn:hover {
@@ -306,34 +312,34 @@
       margin-top: 18px;
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 10px;
+      gap: 8px; /* 移动端减小间距 */
     }
 
     .weekday-row div {
       text-align: center;
       color: var(--muted);
       font-size: 12px;
-      padding: 6px 0;
+      padding: 8px 0; /* 增加触摸面积 */
     }
 
     .calendar-grid {
       margin-top: 8px;
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 10px;
+      gap: 8px; /* 移动端减小间距 */
     }
 
     .day-cell {
       position: relative;
-      min-height: 146px;
-      border-radius: 20px;
+      min-height: 120px; /* 移动端减小高度 */
+      border-radius: 16px; /* 移动端稍微减小圆角 */
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.7);
       overflow: hidden;
-      padding: 10px;
+      padding: 8px; /* 减少内边距 */
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px; /* 减小间距 */
       transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
     }
 
@@ -372,11 +378,11 @@
 
     .day-top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
     .day-num { display: flex; flex-direction: column; gap: 2px; }
-    .day-num strong { font-size: 16px; }
+    .day-num strong { font-size: 15px; } /* 移动端字体稍小 */
     .day-num small { color: var(--muted); font-size: 11px; }
     .day-total { text-align: right; }
-    .day-total strong { display: block; font-size: 15px; }
-    .day-total small { color: var(--muted); font-size: 11px; }
+    .day-total strong { display: block; font-size: 14px; } /* 移动端字体稍小 */
+    .day-total small { color: var(--muted); font-size: 10px; } /* 移动端字体稍小 */
 
     .timeline {
       position: relative;
@@ -386,7 +392,7 @@
         linear-gradient(to right, rgba(17,17,17,0.04) 1px, transparent 1px) 0 0 / 4.16% 100%,
         linear-gradient(to top, rgba(17,17,17,0.04), rgba(17,17,17,0.04));
       overflow: hidden;
-      min-height: 60px;
+      min-height: 50px; /* 移动端减小高度 */
     }
 
     .theme-dark .timeline {
@@ -397,8 +403,8 @@
 
     .segment-piece {
       position: absolute;
-      top: 24px;
-      height: 20px;
+      top: 18px; /* 移动端调整位置 */
+      height: 16px; /* 移动端减小高度 */
       border-radius: 999px;
       opacity: .92;
     }
@@ -413,7 +419,7 @@
 
     .segment-tag {
       font-size: 10px;
-      padding: 5px 8px;
+      padding: 4px 7px; /* 移动端减小内边距 */
       border-radius: 999px;
       background: rgba(17,17,17,0.05);
       color: rgba(17,17,17,0.72);
@@ -433,7 +439,7 @@
       justify-content: space-between;
       align-items: center;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px; /* 移动端字体稍小 */
     }
 
     .conflict-warning {
@@ -503,8 +509,9 @@
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.82);
       border-radius: 12px;
-      padding: 7px 10px;
+      padding: 8px 12px; /* 移动端增加触摸面积 */
       font-size: 12px;
+      min-height: 40px; /* 符合触摸标准 */
     }
 
     .theme-dark .segment-actions button {
@@ -517,7 +524,7 @@
     .segment-form { display: flex; flex-direction: column; gap: 12px; }
 
     .field { display: flex; flex-direction: column; gap: 7px; }
-    .field > span { color: var(--muted); font-size: 12px; }
+    .field > span { color: var(--muted); font-size: 13px; }
 
     .field input,
     .field select {
@@ -525,8 +532,9 @@
       background: rgba(255,255,255,0.9);
       color: var(--text);
       border-radius: 14px;
-      padding: 11px 12px;
+      padding: 12px; /* 移动端增加内边距 */
       outline: none;
+      min-height: 44px; /* 符合触摸标准 */
     }
 
     .theme-dark .field input,
@@ -655,13 +663,14 @@
       border: 1px solid var(--line);
       border-radius: 16px;
       background: rgba(255,255,255,0.7);
-      padding: 11px 13px;
+      padding: 12px; /* 移动端增加内边距 */
       display: flex;
       align-items: center;
       gap: 10px;
       text-align: left;
       transition: border-color .15s, background .15s, transform .15s;
       cursor: pointer;
+      min-height: 60px; /* 确保触摸面积 */
     }
 
     .theme-dark .profile-list-item {
@@ -699,12 +708,12 @@
     }
 
     .profile-item-info { flex: 1; min-width: 0; }
-    .profile-item-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .profile-item-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .profile-item-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-item-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
     .profile-item-badge {
-      font-size: 10px;
-      padding: 3px 7px;
+      font-size: 11px;
+      padding: 4px 8px;
       border-radius: 999px;
       background: rgba(17,17,17,0.06);
       color: var(--muted);
@@ -747,12 +756,12 @@
     }
 
     .night-window-hint {
-      font-size: 11px;
+      font-size: 12px; /* 移动端字体稍大 */
       color: var(--muted);
       background: rgba(94,92,230,0.07);
       border: 1px solid rgba(94,92,230,0.15);
       border-radius: 12px;
-      padding: 9px 12px;
+      padding: 10px 12px; /* 移动端增加内边距 */
       line-height: 1.5;
     }
 
@@ -804,8 +813,8 @@
     }
 
     .qs-modal-box h3 { margin: 0 0 16px; font-size: 17px; }
-    .qs-modal-box label { display: block; margin-bottom: 10px; font-size: 14px; cursor: pointer; }
-    .qs-modal-box label input { margin-right: 8px; }
+    .qs-modal-box label { display: block; margin-bottom: 12px; font-size: 14px; cursor: pointer; padding: 8px 0; }
+    .qs-modal-box label input { margin-right: 10px; }
     .qs-modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
 
     /* ─── Toast ─────────────────────────────────────── */
@@ -823,7 +832,7 @@
       border-radius: 14px;
       box-shadow: var(--shadow);
       transition: all .2s ease;
-      font-size: 13px;
+      font-size: 14px; /* 移动端字体稍大 */
       max-width: min(90vw, 520px);
       z-index: 9999;
     }
@@ -836,6 +845,7 @@
 
     button:disabled { opacity: .5; cursor: not-allowed; }
 
+    /* 移动端优化 */
     @media (max-width: 1180px) {
       .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .main-layout { grid-template-columns: 1fr; }
@@ -847,12 +857,47 @@
       .topbar-actions { justify-content: stretch; }
       .topbar-actions button { flex: 1 1 auto; }
       .summary-grid { grid-template-columns: 1fr; }
-      .calendar-grid, .weekday-row { gap: 8px; }
-      .day-cell { min-height: 132px; padding: 9px; }
+      .calendar-grid, .weekday-row { gap: 6px; }
+      .day-cell { min-height: 100px; padding: 6px; }
+      .day-num strong { font-size: 14px; }
+      .day-total strong { font-size: 13px; }
       .field-grid { grid-template-columns: 1fr; }
       .panel-head, .inspector-head { flex-direction: column; }
       .modal-body { grid-template-columns: 1fr; }
       .profile-list-panel { border-right: none; border-bottom: 1px solid var(--line); max-height: 220px; }
+      
+      /* 增加触摸目标大小 */
+      .day-cell { min-height: 110px; }
+      .ghost-btn, .primary-btn { padding: 14px 18px; min-height: 48px; }
+      .segment-actions button { padding: 10px 14px; min-height: 44px; }
+    }
+    
+    @media (max-width: 480px) {
+      .app { padding: 8px; }
+      .topbar { padding: 14px 16px; }
+      .calendar-panel { padding: 14px; }
+      .panel-card { padding: 14px; }
+      .day-cell { min-height: 90px; padding: 5px; }
+      .day-num strong { font-size: 13px; }
+      .day-total strong { font-size: 12px; }
+      .timeline { min-height: 40px; }
+      .segment-piece { top: 14px; height: 14px; }
+      .segment-tag { font-size: 9px; padding: 3px 6px; }
+      .day-footer { font-size: 10px; }
+      .stat-card { padding: 14px; }
+      .stat-card .value { font-size: 26px; }
+      .panel-head h2, .inspector-head h2 { font-size: 17px; }
+      .panel-head p, .inspector-head p, .form-hint { font-size: 12px; }
+    }
+    
+    /* 横屏模式优化 */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .calendar-grid, .weekday-row { gap: 4px; }
+      .day-cell { min-height: 80px; padding: 4px; }
+      .day-num strong { font-size: 12px; }
+      .day-total strong { font-size: 11px; }
+      .timeline { min-height: 30px; }
+      .segment-piece { top: 10px; height: 12px; }
     }
   </style>
 </head>
